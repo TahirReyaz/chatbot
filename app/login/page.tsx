@@ -3,6 +3,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import Link from "next/link";
+import { useActionState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -14,7 +16,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
+import { signIn } from "@/auth";
+import { authenticate } from "@/lib/actions/auth";
 
 const formSchema = z.object({
   email: z
@@ -35,17 +38,14 @@ const Login = () => {
     },
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-  }
+  const [errorMessage, formAction, isPending] = useActionState(
+    authenticate,
+    undefined
+  );
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 w-[350px] mx-auto mt-8 "
-      >
+      <form action={formAction} className="space-y-8 w-[350px] mx-auto mt-8 ">
         <h3 className="text-center text-lg font-bold">Sign In</h3>
         <p className="text-center text-sm">
           Use your email and password to sign in
@@ -80,7 +80,11 @@ const Login = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full" variant={"secondary"}>
+        <Button
+          type="submit"
+          className="w-full"
+          variant={isPending ? "ghost" : "secondary"}
+        >
           Sign in
         </Button>
         <p className="text-sm text-center">
