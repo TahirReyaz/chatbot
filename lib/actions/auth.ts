@@ -1,6 +1,5 @@
 "use server";
 
-import { z } from "zod";
 import { AuthError } from "next-auth";
 import { sql } from "@vercel/postgres";
 import bcrypt from "bcrypt";
@@ -81,10 +80,10 @@ export const signup = async (
   }
 };
 
-export async function authenticate(
+export const authenticate = async (
   prevState: string | undefined,
   formData: FormData
-) {
+) => {
   try {
     await signIn("credentials", formData);
   } catch (error) {
@@ -98,4 +97,4 @@ export async function authenticate(
     }
     throw error;
   }
-}
+};
