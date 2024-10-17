@@ -6,9 +6,24 @@ export type User = {
   createdat: string;
 };
 
-export type Chat = {
+export type Message = {
   id: string;
   content: string;
-  user: string;
+  userid: string;
   createdat: string;
+  chat: string;
 };
+
+export type Chat = {
+  id: string;
+  title: string;
+  createdAt: string;
+  userid: string;
+};
+
+export interface Session {
+  user: {
+    id: string;
+    email: string;
+  };
+}

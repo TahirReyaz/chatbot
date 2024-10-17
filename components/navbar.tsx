@@ -1,7 +1,9 @@
 import Link from "next/link";
-import { Button } from "./ui/button";
-import { SheetTrigger } from "./ui/sheet";
 import { Menu } from "lucide-react";
+import { Suspense } from "react";
+
+import { SheetTrigger } from "./ui/sheet";
+import UserOrLogin from "./UserOrLogin";
 
 const Navbar = () => {
   return (
@@ -16,16 +18,9 @@ const Navbar = () => {
         <Link href="/">AI Chat</Link>
       </div>
       {/* Buttons */}
-      <Link href="/login">
-        <Button
-          {...{
-            size: "sm",
-            variant: "secondary",
-          }}
-        >
-          Login
-        </Button>
-      </Link>
+      <Suspense fallback={<div className="flex-1 overflow-auto" />}>
+        <UserOrLogin />
+      </Suspense>
     </nav>
   );
 };
