@@ -20,8 +20,9 @@ export function Sidebar() {
       </SheetHeader>
       <div className="w-full">
         {chats?.length > 0 ? (
-          chats.map((chat) => (
+          chats.map((chat, index) => (
             <ChatCard
+              key={index}
               {...{
                 ...chat,
               }}
