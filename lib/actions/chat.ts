@@ -1,9 +1,9 @@
 "use server";
 
-import { Chat } from "@/app/lib/definitions";
 import { sql } from "@vercel/postgres";
 import Groq from "groq-sdk";
-import { NextRequest, NextResponse } from "next/server";
+
+import { Chat, Message } from "@/app/lib/definitions";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
@@ -15,42 +15,20 @@ export const sendMessage = async (
   let newChatId = chatId;
   try {
     //  LoggedIn user with new chat -> create a chat and navigate to chat page with new chatid
+    const botResponse = await getReponseFromBot(message);
     if (!chatId && userid) {
       const newChat = await createNewChat(message.substring(0, 10), userid);
       newChatId = newChat.id;
       await saveMessage(message, userid, newChat.id);
-
-      const chatCompletion = await groq.chat.completions.create({
-        messages: [
-          {
-            role: "user",
-            content: message || "",
-          },
-        ],
-        model: "llama3-8b-8192",
-      });
-      const botResponse = chatCompletion.choices[0]?.message?.content || "";
-      await saveMessage(botResponse, userid, newChat.id);
+      await saveMessage(botResponse, "bot", newChat.id);
     }
     // Existing chat -> store the message in chat and the send to groq
     if (chatId && userid) {
-      const newMessage = await saveMessage(message, userid, chatId);
-    }
-    // User not loggedIn -> just send the message
-    if (!chatId && !userid) {
+      await saveMessage(message, userid, chatId);
+      await saveMessage(botResponse, "bot", chatId);
     }
 
-    const chatCompletion = await groq.chat.completions.create({
-      messages: [
-        {
-          role: "user",
-          content: message || "",
-        },
-      ],
-      model: "llama3-8b-8192",
-    });
-    console.log(chatCompletion.choices[0]?.message?.content || "");
-    return { chatId: newChatId };
+    return { chatId: newChatId, botResponse };
   } catch (error) {
     console.error(error);
     throw error;
@@ -95,6 +73,31 @@ export const getChatList = async (userid: string) => {
       SELECT * FROM chats WHERE userid=${userid}
     `;
     return list.rows as Chat[];
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getReponseFromBot = async (input: string) => {
+  const chatCompletion = await groq.chat.completions.create({
+    messages: [
+      {
+        role: "user",
+        content: input || "",
+      },
+    ],
+    model: "llama3-8b-8192",
+  });
+  const botResponse = chatCompletion.choices[0]?.message?.content || "";
+  return botResponse;
+};
+
+export const getMessageList = async (chatId: string) => {
+  try {
+    const list = await sql`
+      SELECT * FROM messages WHERE chat=${chatId}
+    `;
+    return list.rows as Message[];
   } catch (error) {
     throw error;
   }

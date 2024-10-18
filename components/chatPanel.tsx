@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { sendMessage } from "@/lib/actions/chat";
 import { Button } from "./ui/button";
+import Messages from "./Messages";
 
 interface Props {
   id?: string;
@@ -20,7 +21,9 @@ const ChatPanel = ({ id, userid }: Props) => {
   const handleSubmit = async () => {
     try {
       const res = await sendMessage(input, id, userid);
-      router.push(`/chat/${res.chatId}`);
+      if (!id) {
+        router.push(`/chat/${res.chatId}`);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -28,7 +31,9 @@ const ChatPanel = ({ id, userid }: Props) => {
 
   return (
     <div>
-      <div className="text-gray-50">Messages</div>
+      {/* <Suspense fallback={<p>Loading...</p>}> */}
+      <Messages {...{ chatId: id }} />
+      {/* </Suspense> */}
       <Input
         placeholder="Say something..."
         className="bg-shark"
