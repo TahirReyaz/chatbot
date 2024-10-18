@@ -4,7 +4,7 @@ import ChatPanel from "@/components/chatPanel";
 
 const Chat = async ({ params }: { params: { id: string } }) => {
   const session = (await auth()) as Session;
-  return <ChatPanel {...{ id: params.id, userId: session.user.id }} />;
+  return <ChatPanel {...{ id: params.id, userid: session.user.id }} />;
 };
 
 export default Chat;

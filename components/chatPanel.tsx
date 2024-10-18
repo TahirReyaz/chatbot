@@ -10,16 +10,16 @@ import { Button } from "./ui/button";
 
 interface Props {
   id?: string;
-  userId?: string;
+  userid?: string;
 }
 
-const ChatPanel = ({ id, userId }: Props) => {
+const ChatPanel = ({ id, userid }: Props) => {
   const [input, setInput] = useState<string>("");
   const router = useRouter();
 
   const handleSubmit = async () => {
     try {
-      const res = await sendMessage(input, id, userId);
+      const res = await sendMessage(input, id, userid);
       router.push(`/chat/${res.chatId}`);
     } catch (error) {
       console.error(error);
