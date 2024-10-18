@@ -92,7 +92,7 @@ const Signup = () => {
         </Button>
         <p className="text-sm text-center">
           Already have an account?{" "}
-          <Link href="/signup" className="font-bold">
+          <Link href="/login" className="font-bold">
             Sign in
           </Link>{" "}
           instead.

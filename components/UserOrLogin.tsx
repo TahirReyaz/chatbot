@@ -6,7 +6,6 @@ import { Button } from "./ui/button";
 
 const UserOrLogin = async () => {
   const session = (await auth()) as Session;
-  console.log({ session });
   return (
     <>
       {session.user ? (

@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import {
   SheetClose,
   SheetContent,
-  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
