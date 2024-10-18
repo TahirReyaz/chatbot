@@ -2,23 +2,22 @@
 
 import { sql } from "@vercel/postgres";
 import Groq from "groq-sdk";
+import { NextRequest, NextResponse } from "next/server";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 export const sendMessage = async (
-  prevState: void | undefined,
-  formData: FormData,
+  message: string,
   chatId?: string,
   userId?: string
 ) => {
+  let newChatId = chatId;
   try {
-    const message: string = (formData.get("input") as string) || "";
-
     //  LoggedIn user with new chat -> create a chat and navigate to chat page with new chatid
     if (!chatId && userId) {
       const newChat = await createNewChat(message.substring(0, 10), userId);
+      newChatId = newChat.id;
       await saveMessage(message, userId, newChat.id);
-      console.log({ newChat });
 
       const chatCompletion = await groq.chat.completions.create({
         messages: [
@@ -51,6 +50,7 @@ export const sendMessage = async (
       model: "llama3-8b-8192",
     });
     console.log(chatCompletion.choices[0]?.message?.content || "");
+    return { chatId: newChatId };
   } catch (error) {
     console.error(error);
     throw error;
