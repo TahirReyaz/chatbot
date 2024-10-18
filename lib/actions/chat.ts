@@ -17,7 +17,20 @@ export const sendMessage = async (
     //  LoggedIn user with new chat -> create a chat and navigate to chat page with new chatid
     if (!chatId && userId) {
       const newChat = await createNewChat(message.substring(0, 10), userId);
+      await saveMessage(message, userId, newChat.id);
       console.log({ newChat });
+
+      const chatCompletion = await groq.chat.completions.create({
+        messages: [
+          {
+            role: "user",
+            content: message || "",
+          },
+        ],
+        model: "llama3-8b-8192",
+      });
+      const botResponse = chatCompletion.choices[0]?.message?.content || "";
+      await saveMessage(botResponse, userId, newChat.id);
     }
     // Existing chat -> store the message in chat and the send to groq
     if (chatId && userId) {
@@ -51,9 +64,11 @@ export const saveMessage = async (
 ) => {
   try {
     const newMsg = await sql`
-      INSERT INTO messages (content, userid, chat) VALUES (${content}, ${userid}, ${chat})
+      INSERT INTO messages (content, userid, chat) 
+      VALUES (${content}, ${userid}, ${chat})
+      RETURNING *
     `;
-    return newMsg;
+    return newMsg.rows[0];
   } catch (error) {
     console.error(error);
     throw error;
@@ -63,9 +78,11 @@ export const saveMessage = async (
 export const createNewChat = async (title: string, userid: string) => {
   try {
     const newChat = await sql`
-      INSERT INTO chats (title, userid) VALUES (${title}, ${userid})
+      INSERT INTO chats (title, userid) 
+      VALUES (${title}, ${userid})
+      RETURNING *
     `;
-    return newChat;
+    return newChat.rows[0];
   } catch (error) {
     console.error(error);
     throw error;
