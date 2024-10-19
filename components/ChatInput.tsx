@@ -3,7 +3,6 @@
 import { useState } from "react";
 
 import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
 import { sendMessage } from "@/lib/actions/chat";
 import { Button } from "./ui/button";
 

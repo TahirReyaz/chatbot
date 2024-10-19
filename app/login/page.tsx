@@ -16,7 +16,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { signIn } from "@/auth";
 import { authenticate } from "@/lib/actions/auth";
 
 const formSchema = z.object({
@@ -42,6 +41,8 @@ const Login = () => {
     authenticate,
     undefined
   );
+
+  console.log({ errorMessage });
 
   return (
     <Form {...form}>
@@ -88,7 +89,7 @@ const Login = () => {
           Sign in
         </Button>
         <p className="text-sm text-center">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link href="/signup" className="font-bold">
             Sign up
           </Link>{" "}
