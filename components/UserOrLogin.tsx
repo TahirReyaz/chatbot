@@ -8,7 +8,7 @@ const UserOrLogin = async () => {
   const session = (await auth()) as Session;
   return (
     <>
-      {session.user ? (
+      {session?.user ? (
         <Button>{session.user.email}</Button>
       ) : (
         <Link href="/login">
