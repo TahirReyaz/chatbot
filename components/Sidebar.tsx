@@ -1,41 +1,12 @@
-"use client";
+import { getChatList } from "@/lib/actions/chat";
+import SidebarContent from "./SidebarContent";
+import { auth } from "@/auth";
+import { Session } from "next-auth";
 
-import { Button } from "@/components/ui/button";
-import {
-  SheetClose,
-  SheetContent,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
-import ChatCard from "./chatCard";
+const Sidebar = async () => {
+  const session = (await auth()) as Session;
+  const chats = session?.user?.id ? await getChatList(session.user?.id) : [];
+  return <SidebarContent {...{ chats, isLoggedIn: !!session?.user?.id }} />;
+};
 
-export function Sidebar() {
-  const chats = [{ title: "Adrak", id: "lesun" }];
-  return (
-    <SheetContent side="left" className="bg-shark text-iron w-full">
-      <SheetHeader>
-        <SheetTitle className="text-iron">History</SheetTitle>
-      </SheetHeader>
-      <div className="w-full">
-        {chats?.length > 0 ? (
-          chats.map((chat, index) => (
-            <ChatCard
-              key={index}
-              {...{
-                ...chat,
-              }}
-            />
-          ))
-        ) : (
-          <p>Login to save and revisit previous chats!</p>
-        )}
-      </div>
-      <SheetFooter>
-        <SheetClose asChild>
-          <Button type="submit">Save changes</Button>
-        </SheetClose>
-      </SheetFooter>
-    </SheetContent>
-  );
-}
+export default Sidebar;

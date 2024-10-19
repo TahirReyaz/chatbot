@@ -11,7 +11,7 @@ const ChatCard = ({ title, id }: Props) => {
     <SheetClose asChild className="w-full">
       <Link
         href={`/chat/${id}`}
-        className="rounded bg-santasGray p-2 w-full flex"
+        className="rounded hover:bg-santasGray/20 p-2 w-full flex"
       >
         {title}
       </Link>
