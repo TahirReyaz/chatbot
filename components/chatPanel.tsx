@@ -8,7 +8,7 @@ interface Props {
 
 const ChatPanel = ({ id, userid }: Props) => {
   return (
-    <div>
+    <div className="w-full md:w-[70vw] mx-auto flex flex-col gap-8">
       <Messages {...{ chatId: id }} />
       <ChatInput {...{ id, userid }} />
     </div>

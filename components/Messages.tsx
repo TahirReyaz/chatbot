@@ -10,7 +10,7 @@ const Messages = async ({ chatId }: Props) => {
   const messages: MessageType[] = chatId ? await getMessageList(chatId) : [];
 
   return (
-    <div className="text-gray-50">
+    <div className="text-gray-50 max-h-[70vh] overflow-y-auto">
       {/* Render your messages here */}
       {messages.map((message) => (
         <Message key={message.id} {...{ ...message }} />
