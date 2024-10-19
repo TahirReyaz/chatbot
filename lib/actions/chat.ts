@@ -2,8 +2,10 @@
 
 import { sql } from "@vercel/postgres";
 import Groq from "groq-sdk";
+import { revalidatePath } from "next/cache";
 
 import { Chat, Message } from "@/app/lib/definitions";
+import { redirect } from "next/navigation";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
@@ -21,14 +23,14 @@ export const sendMessage = async (
       newChatId = newChat.id;
       await saveMessage(message, userid, newChat.id);
       await saveMessage(botResponse, "bot", newChat.id);
+      redirect(`/chat/${newChatId}`);
     }
     // Existing chat -> store the message in chat and the send to groq
     if (chatId && userid) {
       await saveMessage(message, userid, chatId);
       await saveMessage(botResponse, "bot", chatId);
+      revalidatePath(`/chat/${chatId}`);
     }
-
-    return { chatId: newChatId, botResponse };
   } catch (error) {
     console.error(error);
     throw error;
