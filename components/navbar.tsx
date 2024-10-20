@@ -7,11 +7,11 @@ import UserOrLogin from "./UserOrLogin";
 
 const Navbar = () => {
   return (
-    <nav className="text-iron p-2 text-sm flex justify-between">
+    <nav className="p-2 text-sm flex justify-between">
       {/* Sidebar and Hero */}
       <div className="flex gap-2 items-center">
         <SheetTrigger className="items-center">
-          <div className="p-1 rounded border border-1 border-shark">
+          <div className="p-1 rounded border border-1">
             <Menu size={20} />
           </div>
         </SheetTrigger>

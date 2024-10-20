@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import ChatInput from "./ChatInput";
 import Messages from "./Messages";
 
@@ -9,7 +10,9 @@ interface Props {
 const ChatPanel = ({ id, userid }: Props) => {
   return (
     <div className="w-full md:w-[70vw] mx-auto flex flex-col gap-8">
-      <Messages {...{ chatId: id }} />
+      <Suspense fallback={<p>Loading...</p>}>
+        <Messages {...{ chatId: id }} />
+      </Suspense>
       <ChatInput {...{ id, userid }} />
     </div>
   );
