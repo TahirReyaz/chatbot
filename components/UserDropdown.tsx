@@ -7,7 +7,7 @@ const UserDropdown = () => {
   return (
     <DropdownMenuContent className="border border-santasGray">
       <ToggleThemeButton />
-      <DropdownMenuItem className="text-red-500 p-0">
+      <DropdownMenuItem className="text-red-500">
         <form
           action={async () => {
             "use server";

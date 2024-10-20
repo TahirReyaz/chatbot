@@ -9,6 +9,7 @@ const ToggleThemeButton = () => {
   return (
     <DropdownMenuItem
       onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
+      className="cursor-pointer"
     >
       {`Toggle ${resolvedTheme === "light" ? "dark" : "light"} mode`}
     </DropdownMenuItem>
