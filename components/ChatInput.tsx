@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-
-import { Input } from "./ui/input";
-import { sendMessage } from "@/lib/actions/chat";
-import { Button } from "./ui/button";
 import { useTheme } from "next-themes";
+import { ArrowUp } from "lucide-react";
+
+import { sendMessage } from "@/lib/actions/chat";
+import { Textarea } from "./ui/textarea";
 
 interface Props {
   id?: string;
@@ -18,6 +18,7 @@ const ChatInput = ({ id, userid }: Props) => {
 
   const handleSubmit = async () => {
     try {
+      setInput("");
       await sendMessage(input, id, userid);
     } catch (error) {
       console.error(error);
@@ -25,8 +26,8 @@ const ChatInput = ({ id, userid }: Props) => {
   };
 
   return (
-    <div>
-      <Input
+    <div className="relative">
+      <Textarea
         placeholder="Say something..."
         value={input}
         onChange={(e) => setInput(e.target.value)}
@@ -34,15 +35,16 @@ const ChatInput = ({ id, userid }: Props) => {
           resolvedTheme === "light" ? "bg-athensGray" : "bg-shark"
         }`}
       />
-      <Button
-        type="submit"
-        className={`w-full ${
-          resolvedTheme === "light" ? "bg-santasGray" : "bg-alabaster"
+      <div
+        className={`absolute right-4 bottom-2 z-10 p-1 rounded-full cursor-pointer ${
+          resolvedTheme === "light"
+            ? "bg-alabaster text-santasGray"
+            : "bg-santasGray text-woodsmoke"
         }`}
         onClick={handleSubmit}
       >
-        Send
-      </Button>
+        <ArrowUp size={20} />
+      </div>
     </div>
   );
 };

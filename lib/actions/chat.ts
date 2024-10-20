@@ -32,6 +32,8 @@ export const sendMessage = async (
     // Existing chat -> store the message in chat and the send to groq
     if (chatId && userid) {
       await saveMessage(message, userid, chatId);
+      // This revalidatePath isn't working but the at the end is working don't know why
+      revalidatePath(`/chat/${chatId}`);
 
       const botResponse = await getReponseFromBot(undefined, chatId, userid);
 
