@@ -104,3 +104,14 @@ export const getMessageList = async (chatId: string) => {
     throw error;
   }
 };
+
+export const deleteChat = async (chatId: string) => {
+  try {
+    await sql`
+      DELETE FROM chats WHERE id=${chatId}
+    `;
+    revalidatePath("/");
+  } catch (error) {
+    throw error;
+  }
+};

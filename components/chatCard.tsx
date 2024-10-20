@@ -7,6 +7,7 @@ import {
   DropdownMenuItem,
 } from "./ui/dropdown-menu";
 import ChatMenuIcon from "./ChatMenuIcon";
+import { deleteChat } from "@/lib/actions/chat";
 
 interface Props {
   title: string;
@@ -25,7 +26,10 @@ const ChatCard = ({ title, id }: Props) => {
         <ChatMenuIcon />
         <DropdownMenuContent>
           <DropdownMenuItem className="cursor-pointer">Rename</DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer text-red-500 hover:text-red-500">
+          <DropdownMenuItem
+            className="cursor-pointer text-red-500 hover:text-red-500"
+            onClick={() => deleteChat(id)}
+          >
             Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
