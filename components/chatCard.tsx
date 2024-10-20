@@ -7,7 +7,6 @@ import {
   DropdownMenuItem,
 } from "./ui/dropdown-menu";
 import ChatMenuIcon from "./ChatMenuIcon";
-import { deleteChat } from "@/lib/actions/chat";
 import ChatDeleteButton from "./ChatDeleteButton";
 
 interface Props {
