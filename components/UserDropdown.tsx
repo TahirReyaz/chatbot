@@ -1,6 +1,6 @@
 import { signOut } from "@/auth";
-import { Button } from "./ui/button";
 import { DropdownMenuContent, DropdownMenuItem } from "./ui/dropdown-menu";
+import { redirect } from "next/navigation";
 
 const UserDropdown = () => {
   return (
@@ -13,6 +13,7 @@ const UserDropdown = () => {
           action={async () => {
             "use server";
             await signOut();
+            redirect("/");
           }}
           className="w-full"
         >
