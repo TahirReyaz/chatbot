@@ -32,21 +32,8 @@ export const sendMessage = async (
     // Existing chat -> store the message in chat and the send to groq
     if (chatId && userid) {
       await saveMessage(message, userid, chatId);
-      const messages: Message[] = await getMessageList(chatId);
-      const groqMessages: (
-        | ChatCompletionUserMessageParam
-        | ChatCompletionAssistantMessageParam
-      )[] = messages.map((dbMessage) => ({
-        role: dbMessage.userid === "bot" ? "assistant" : "user",
-        content: dbMessage.content,
-        name: userid,
-      }));
-      const completion = await groq.chat.completions.create({
-        messages: groqMessages,
-        model: "mixtral-8x7b-32768",
-      });
 
-      const botResponse = completion.choices[0]?.message?.content || "";
+      const botResponse = await getReponseFromBot(undefined, chatId, userid);
 
       await saveMessage(botResponse, "bot", chatId);
       revalidatePath(`/chat/${chatId}`);
@@ -100,17 +87,42 @@ export const getChatList = async (userid: string) => {
   }
 };
 
-export const getReponseFromBot = async (input: string) => {
-  const chatCompletion = await groq.chat.completions.create({
-    messages: [
-      {
-        role: "user",
-        content: input || "",
-      },
-    ],
-    model: "llama3-8b-8192",
-  });
-  const botResponse = chatCompletion.choices[0]?.message?.content || "";
+export const getReponseFromBot = async (
+  input?: string,
+  chatId?: string,
+  userid?: string
+) => {
+  let botResponse = "";
+  if (chatId && userid) {
+    const messages: Message[] = await getMessageList(chatId);
+    const groqMessages: (
+      | ChatCompletionUserMessageParam
+      | ChatCompletionAssistantMessageParam
+    )[] = messages.map((dbMessage) => ({
+      role: dbMessage.userid === "bot" ? "assistant" : "user",
+      content: dbMessage.content,
+      name: userid,
+    }));
+    const completion = await groq.chat.completions.create({
+      messages: groqMessages,
+      model: "mixtral-8x7b-32768",
+    });
+
+    botResponse = completion.choices[0]?.message?.content || "";
+  } else if (input) {
+    const chatCompletion = await groq.chat.completions.create({
+      messages: [
+        {
+          role: "user",
+          content: input || "",
+        },
+      ],
+      model: "llama3-8b-8192",
+    });
+
+    botResponse = chatCompletion.choices[0]?.message?.content || "";
+  }
+
   return botResponse;
 };
 
