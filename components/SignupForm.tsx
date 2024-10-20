@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -17,6 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { signup } from "@/lib/actions/auth";
+import { useState } from "react";
 
 const passwordValidation = new RegExp(
   /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
@@ -36,6 +38,8 @@ const formSchema = z.object({
 });
 
 const SignupForm = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -45,8 +49,15 @@ const SignupForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    await signup(values.email, values.password);
-    redirect("/login");
+    try {
+      setIsLoading(true);
+      await signup(values.email, values.password);
+      setIsLoading(false);
+      redirect("/login");
+    } catch (error) {
+      setIsLoading(false);
+      console.error(error);
+    }
   };
 
   return (
@@ -89,8 +100,9 @@ const SignupForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full" variant={"secondary"}>
+        <Button type="submit" className="w-full">
           Sign up
+          {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
         </Button>
         <p className="text-sm text-center">
           Already have an account?{" "}

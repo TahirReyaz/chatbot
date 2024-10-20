@@ -22,10 +22,11 @@ export const sendMessage = async (
   try {
     //  LoggedIn user with new chat -> create a chat and navigate to chat page with new chatid
     if (!chatId && userid) {
-      const botResponse = await getReponseFromBot(message);
-      const newChat = await createNewChat(message.substring(0, 10), userid);
+      const newChat = await createNewChat(message.substring(0, 20), userid);
       newChatId = newChat.id;
       await saveMessage(message, userid, newChat.id);
+
+      const botResponse = await getReponseFromBot(newChatId, userid);
       await saveMessage(botResponse, "bot", newChat.id);
       redirect(`/chat/${newChatId}`);
     }
@@ -35,7 +36,7 @@ export const sendMessage = async (
       // This revalidatePath isn't working but the at the end is working don't know why
       revalidatePath(`/chat/${chatId}`);
 
-      const botResponse = await getReponseFromBot(undefined, chatId, userid);
+      const botResponse = await getReponseFromBot(chatId, userid);
 
       await saveMessage(botResponse, "bot", chatId);
       revalidatePath(`/chat/${chatId}`);
@@ -89,11 +90,7 @@ export const getChatList = async (userid: string) => {
   }
 };
 
-export const getReponseFromBot = async (
-  input?: string,
-  chatId?: string,
-  userid?: string
-) => {
+export const getReponseFromBot = async (chatId?: string, userid?: string) => {
   let botResponse = "";
   if (chatId && userid) {
     const messages: Message[] = await getMessageList(chatId);
@@ -111,19 +108,20 @@ export const getReponseFromBot = async (
     });
 
     botResponse = completion.choices[0]?.message?.content || "";
-  } else if (input) {
-    const chatCompletion = await groq.chat.completions.create({
-      messages: [
-        {
-          role: "user",
-          content: input || "",
-        },
-      ],
-      model: "llama3-8b-8192",
-    });
-
-    botResponse = chatCompletion.choices[0]?.message?.content || "";
   }
+  //  else if (input) {
+  //   const chatCompletion = await groq.chat.completions.create({
+  //     messages: [
+  //       {
+  //         role: "user",
+  //         content: input || "",
+  //       },
+  //     ],
+  //     model: "llama3-8b-8192",
+  //   });
+
+  //   botResponse = chatCompletion.choices[0]?.message?.content || "";
+  // }
 
   return botResponse;
 };

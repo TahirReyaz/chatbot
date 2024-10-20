@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTheme } from "next-themes";
-import { ArrowUp } from "lucide-react";
+import { ArrowUp, Loader } from "lucide-react";
 
 import { sendMessage } from "@/lib/actions/chat";
 import { Textarea } from "./ui/textarea";
@@ -14,13 +14,17 @@ interface Props {
 
 const ChatInput = ({ id, userid }: Props) => {
   const [input, setInput] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { resolvedTheme } = useTheme();
 
   const handleSubmit = async () => {
     try {
       setInput("");
+      setIsLoading(true);
       await sendMessage(input, id, userid);
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       console.error(error);
     }
   };
@@ -34,6 +38,7 @@ const ChatInput = ({ id, userid }: Props) => {
         className={`${
           resolvedTheme === "light" ? "bg-athensGray" : "bg-shark"
         }`}
+        disabled={isLoading}
       />
       <div
         className={`absolute right-4 bottom-2 z-10 p-1 rounded-full cursor-pointer ${
@@ -43,7 +48,7 @@ const ChatInput = ({ id, userid }: Props) => {
         }`}
         onClick={handleSubmit}
       >
-        <ArrowUp size={20} />
+        {isLoading ? <Loader size={20} /> : <ArrowUp size={20} />}
       </div>
     </div>
   );

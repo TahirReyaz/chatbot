@@ -5,6 +5,7 @@ import { SheetClose, SheetContent } from "@/components/ui/sheet";
 import ChatCard from "./chatCard";
 import { Chat } from "@/app/lib/definitions";
 import Link from "next/link";
+import { useTheme } from "next-themes";
 
 interface Props {
   chats?: Chat[];
@@ -12,11 +13,18 @@ interface Props {
 }
 
 const SidebarContent = ({ chats, isLoggedIn }: Props) => {
+  const { resolvedTheme } = useTheme();
+
   return (
-    <SheetContent side="left" className="w-full">
-      <div className="flex gap-4 text-sm mb-8">
+    <SheetContent
+      side="left"
+      className={`w-full text-sm ${
+        resolvedTheme === "light" ? "text-woodsmoke" : "text-alabaster"
+      }`}
+    >
+      <div className="flex gap-4 mb-8">
         <h5>History</h5>
-        <span>{`${chats?.length ?? 0} chats`}</span>
+        <span className="text-santasGray">{`${chats?.length ?? 0} chats`}</span>
       </div>
       <SheetClose asChild className="w-full mb-4">
         <Link href={`/`} className="rounded hover:bg-santasGray/20 w-full flex">
@@ -35,11 +43,11 @@ const SidebarContent = ({ chats, isLoggedIn }: Props) => {
               />
             ))
           ) : (
-            <p>Login to save and revisit previous chats!</p>
+            <p>0 chats! Start new chat</p>
           )}
         </div>
       ) : (
-        <p>0 chats! Start new chat</p>
+        <p>Login to save and revisit previous chats!</p>
       )}
     </SheetContent>
   );

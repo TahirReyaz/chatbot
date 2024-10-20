@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Link from "next/link";
 import { useActionState } from "react";
+import { Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -85,8 +86,10 @@ const LoginForm = () => {
           type="submit"
           className="w-full"
           variant={isPending ? "ghost" : "secondary"}
+          disabled={isPending}
         >
           Sign in
+          {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
         </Button>
         <p className="text-sm text-center">
           Don&apos;t have an account?{" "}
