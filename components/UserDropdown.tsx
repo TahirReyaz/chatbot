@@ -1,14 +1,13 @@
 import { signOut } from "@/auth";
 import { DropdownMenuContent, DropdownMenuItem } from "./ui/dropdown-menu";
 import { redirect } from "next/navigation";
+import ToggleThemeButton from "./ToggleThemeButton";
 
 const UserDropdown = () => {
   return (
-    <DropdownMenuContent className="border border-santasGray bg-woodsmoke">
-      <DropdownMenuItem className="text-iron">
-        Toggle light mode
-      </DropdownMenuItem>
-      <DropdownMenuItem className="bg-transparent text-red-500 p-0 hover:bg-shark">
+    <DropdownMenuContent className="border border-santasGray">
+      <ToggleThemeButton />
+      <DropdownMenuItem className="text-red-500 p-0">
         <form
           action={async () => {
             "use server";

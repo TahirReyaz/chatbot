@@ -26,16 +26,10 @@ const ChatInput = ({ id, userid }: Props) => {
     <div>
       <Input
         placeholder="Say something..."
-        className="bg-shark"
         value={input}
         onChange={(e) => setInput(e.target.value)}
       />
-      <Button
-        type="submit"
-        className="w-full"
-        variant={"secondary"}
-        onClick={handleSubmit}
-      >
+      <Button type="submit" className="w-full" onClick={handleSubmit}>
         Send
       </Button>
     </div>

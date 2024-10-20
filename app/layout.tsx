@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Suspense } from "react";
+
 import "./globals.css";
+
 import Navbar from "@/components/navbar";
 import { Sheet } from "@/components/ui/sheet";
 import Sidebar from "@/components/Sidebar";
-import { Suspense } from "react";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -30,15 +33,22 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-woodsmoke text-iron`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Sheet>
-          <Suspense fallback={<p>meh</p>}>
-            <Sidebar />
-          </Suspense>
-          <Navbar />
-          {children}
-        </Sheet>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Sheet>
+            <Suspense fallback={<p>meh</p>}>
+              <Sidebar />
+            </Suspense>
+            <Navbar />
+            {children}
+          </Sheet>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -13,7 +13,7 @@ const UserOrLogin = async () => {
       {session?.user ? (
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <Button>{session.user.email}</Button>
+            <Button variant={"secondary"}>{session.user.email}</Button>
           </DropdownMenuTrigger>
           <UserDropdown />
         </DropdownMenu>
@@ -22,7 +22,6 @@ const UserOrLogin = async () => {
           <Button
             {...{
               size: "sm",
-              variant: "secondary",
             }}
           >
             Login

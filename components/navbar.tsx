@@ -12,7 +12,7 @@ const Navbar = () => {
       <div className="flex gap-2 items-center">
         <SheetTrigger className="items-center">
           <div className="p-1 rounded border border-1 border-shark">
-            <Menu size={20} className="text-alabaster" />
+            <Menu size={20} />
           </div>
         </SheetTrigger>
         <Link href="/">AI Chat</Link>

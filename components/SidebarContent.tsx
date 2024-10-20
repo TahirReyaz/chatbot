@@ -13,7 +13,7 @@ interface Props {
 
 const SidebarContent = ({ chats, isLoggedIn }: Props) => {
   return (
-    <SheetContent side="left" className="bg-shark text-iron w-full">
+    <SheetContent side="left" className="w-full">
       <div className="flex gap-4">
         <h5>History</h5>
         <span>{`${chats?.length ?? 0} chats`}</span>
@@ -23,11 +23,9 @@ const SidebarContent = ({ chats, isLoggedIn }: Props) => {
           <SheetClose asChild className="w-full">
             <Link
               href={`/`}
-              className="rounded hover:bg-santasGray/20 p-2 w-full flex"
+              className="rounded hover:bg-santasGray/20 w-full flex"
             >
-              <Button variant={"secondary"} className="w-full">
-                Start New Chat
-              </Button>
+              <Button className="w-full">Start New Chat</Button>
             </Link>
           </SheetClose>
           {chats && chats?.length > 0 ? (

@@ -53,6 +53,9 @@ importers:
       next-auth:
         specifier: 5.0.0-beta.22
         version: 5.0.0-beta.22(next@15.0.0-rc.1(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-bf7e210c-20241017(react@19.0.0-rc-bf7e210c-20241017))(react@19.0.0-rc-bf7e210c-20241017))(react@19.0.0-rc-bf7e210c-20241017)
+      next-themes:
+        specifier: ^0.3.0
+        version: 0.3.0(react-dom@19.0.0-rc-bf7e210c-20241017(react@19.0.0-rc-bf7e210c-20241017))(react@19.0.0-rc-bf7e210c-20241017)
       react:
         specifier: 19.0.0-rc-bf7e210c-20241017
         version: 19.0.0-rc-bf7e210c-20241017
@@ -1946,6 +1949,12 @@ packages:
         optional: true
       nodemailer:
         optional: true
+
+  next-themes@0.3.0:
+    resolution: {integrity: sha512-/QHIrsYpd6Kfk7xakK4svpDI5mmXP0gfvCoJdGpZQ2TOrQZmsW0QxjaiLn8wbIKjtm4BTSqLoix4lxYYOnLJ/w==}
+    peerDependencies:
+      react: ^16.8 || ^17 || ^18
+      react-dom: ^16.8 || ^17 || ^18
 
   next@15.0.0-rc.1:
     resolution: {integrity: sha512-MUoMUM7u6lh5zx1fRbze2jGESj4VIqc0dplx03wN5cLbpW3RhrVD7I3+sDW1khJxi+bayAZuGx03R5qNV9y/EA==}
@@ -4724,6 +4733,11 @@ snapshots:
       '@auth/core': 0.35.3
       next: 15.0.0-rc.1(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-bf7e210c-20241017(react@19.0.0-rc-bf7e210c-20241017))(react@19.0.0-rc-bf7e210c-20241017)
       react: 19.0.0-rc-bf7e210c-20241017
+
+  next-themes@0.3.0(react-dom@19.0.0-rc-bf7e210c-20241017(react@19.0.0-rc-bf7e210c-20241017))(react@19.0.0-rc-bf7e210c-20241017):
+    dependencies:
+      react: 19.0.0-rc-bf7e210c-20241017
+      react-dom: 19.0.0-rc-bf7e210c-20241017(react@19.0.0-rc-bf7e210c-20241017)
 
   next@15.0.0-rc.1(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-bf7e210c-20241017(react@19.0.0-rc-bf7e210c-20241017))(react@19.0.0-rc-bf7e210c-20241017):
     dependencies:
