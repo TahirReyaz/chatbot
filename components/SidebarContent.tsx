@@ -14,20 +14,17 @@ interface Props {
 const SidebarContent = ({ chats, isLoggedIn }: Props) => {
   return (
     <SheetContent side="left" className="w-full">
-      <div className="flex gap-4">
+      <div className="flex gap-4 text-sm mb-8">
         <h5>History</h5>
         <span>{`${chats?.length ?? 0} chats`}</span>
       </div>
+      <SheetClose asChild className="w-full mb-4">
+        <Link href={`/`} className="rounded hover:bg-santasGray/20 w-full flex">
+          <Button className="w-full">Start New Chat</Button>
+        </Link>
+      </SheetClose>
       {isLoggedIn ? (
-        <div className="w-full max-h-[80vh] overflow-y-auto">
-          <SheetClose asChild className="w-full">
-            <Link
-              href={`/`}
-              className="rounded hover:bg-santasGray/20 w-full flex"
-            >
-              <Button className="w-full">Start New Chat</Button>
-            </Link>
-          </SheetClose>
+        <div className="w-full max-h-[75vh] overflow-y-auto">
           {chats && chats?.length > 0 ? (
             chats.map((chat, index) => (
               <ChatCard

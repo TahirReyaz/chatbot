@@ -60,6 +60,8 @@ const config: Config = {
         shark: "#27272A",
         woodsmoke: "#09090B",
         zumthor: "#EFF6FF",
+        athensGray: "#F4F4F5",
+        sendButtonGray: "#18181B",
       },
       borderRadius: {
         lg: "var(--radius)",
