@@ -6,6 +6,10 @@ import { revalidatePath } from "next/cache";
 
 import { Chat, Message } from "@/app/lib/definitions";
 import { redirect } from "next/navigation";
+import {
+  ChatCompletionAssistantMessageParam,
+  ChatCompletionUserMessageParam,
+} from "groq-sdk/resources/chat/completions.mjs";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
@@ -17,8 +21,8 @@ export const sendMessage = async (
   let newChatId = chatId;
   try {
     //  LoggedIn user with new chat -> create a chat and navigate to chat page with new chatid
-    const botResponse = await getReponseFromBot(message);
     if (!chatId && userid) {
+      const botResponse = await getReponseFromBot(message);
       const newChat = await createNewChat(message.substring(0, 10), userid);
       newChatId = newChat.id;
       await saveMessage(message, userid, newChat.id);
@@ -28,6 +32,22 @@ export const sendMessage = async (
     // Existing chat -> store the message in chat and the send to groq
     if (chatId && userid) {
       await saveMessage(message, userid, chatId);
+      const messages: Message[] = await getMessageList(chatId);
+      const groqMessages: (
+        | ChatCompletionUserMessageParam
+        | ChatCompletionAssistantMessageParam
+      )[] = messages.map((dbMessage) => ({
+        role: dbMessage.userid === "bot" ? "assistant" : "user",
+        content: dbMessage.content,
+        name: userid,
+      }));
+      const completion = await groq.chat.completions.create({
+        messages: groqMessages,
+        model: "mixtral-8x7b-32768",
+      });
+
+      const botResponse = completion.choices[0]?.message?.content || "";
+
       await saveMessage(botResponse, "bot", chatId);
       revalidatePath(`/chat/${chatId}`);
     }
