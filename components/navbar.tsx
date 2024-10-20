@@ -4,7 +4,6 @@ import { Suspense } from "react";
 
 import { SheetTrigger } from "./ui/sheet";
 import UserOrLogin from "./UserOrLogin";
-import UserDropdown from "./UserDropdown";
 
 const Navbar = () => {
   return (
@@ -19,7 +18,6 @@ const Navbar = () => {
         <Link href="/">AI Chat</Link>
       </div>
       {/* Buttons */}
-      <UserDropdown />
       <Suspense fallback={<div className="flex-1 overflow-auto" />}>
         <UserOrLogin />
       </Suspense>
