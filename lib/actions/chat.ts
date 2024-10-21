@@ -16,7 +16,8 @@ const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 export const sendMessage = async (
   message: string,
   chatId?: string,
-  userid?: string
+  userid?: string,
+  messsageList?: Message[]
 ) => {
   let newChatId = chatId;
   try {
@@ -31,7 +32,7 @@ export const sendMessage = async (
       redirect(`/chat/${newChatId}`);
     }
     // Existing chat -> store the message in chat and the send to groq
-    if (chatId && userid) {
+    else if (chatId && userid) {
       await saveMessage(message, userid, chatId);
       // This revalidatePath isn't working but the at the end is working don't know why
       revalidatePath(`/chat/${chatId}`);
@@ -40,6 +41,15 @@ export const sendMessage = async (
 
       await saveMessage(botResponse, "bot", chatId);
       revalidatePath(`/chat/${chatId}`);
+    }
+    // User not logged in
+    else {
+      const botResponse = await getReponseFromBot(
+        undefined,
+        undefined,
+        messsageList
+      );
+      return botResponse;
     }
   } catch (error) {
     console.error(error);
@@ -90,38 +100,34 @@ export const getChatList = async (userid: string) => {
   }
 };
 
-export const getReponseFromBot = async (chatId?: string, userid?: string) => {
-  let botResponse = "";
+export const getReponseFromBot = async (
+  chatId?: string,
+  userid?: string,
+  messageList?: Message[]
+) => {
+  let botResponse = "",
+    messages: Message[] = [];
+
   if (chatId && userid) {
-    const messages: Message[] = await getMessageList(chatId);
-    const groqMessages: (
-      | ChatCompletionUserMessageParam
-      | ChatCompletionAssistantMessageParam
-    )[] = messages.map((dbMessage) => ({
-      role: dbMessage.userid === "bot" ? "assistant" : "user",
-      content: dbMessage.content,
-      name: userid,
-    }));
-    const completion = await groq.chat.completions.create({
-      messages: groqMessages,
-      model: "mixtral-8x7b-32768",
-    });
-
-    botResponse = completion.choices[0]?.message?.content || "";
+    messages = await getMessageList(chatId);
+  } else if (messages) {
+    messages = messageList || [];
   }
-  //  else if (input) {
-  //   const chatCompletion = await groq.chat.completions.create({
-  //     messages: [
-  //       {
-  //         role: "user",
-  //         content: input || "",
-  //       },
-  //     ],
-  //     model: "llama3-8b-8192",
-  //   });
 
-  //   botResponse = chatCompletion.choices[0]?.message?.content || "";
-  // }
+  const groqMessages: (
+    | ChatCompletionUserMessageParam
+    | ChatCompletionAssistantMessageParam
+  )[] = messages.map((dbMessage) => ({
+    role: dbMessage.userid === "bot" ? "assistant" : "user",
+    content: dbMessage.content,
+    name: userid,
+  }));
+  const completion = await groq.chat.completions.create({
+    messages: groqMessages,
+    model: "mixtral-8x7b-32768",
+  });
+
+  botResponse = completion.choices[0]?.message?.content || "";
 
   return botResponse;
 };

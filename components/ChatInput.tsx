@@ -10,9 +10,10 @@ import { Textarea } from "./ui/textarea";
 interface Props {
   id?: string;
   userid?: string;
+  handleSubmitNoAuth?: (input: string) => void;
 }
 
-const ChatInput = ({ id, userid }: Props) => {
+const ChatInput = ({ id, userid, handleSubmitNoAuth }: Props) => {
   const [input, setInput] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { resolvedTheme } = useTheme();
@@ -21,7 +22,11 @@ const ChatInput = ({ id, userid }: Props) => {
     try {
       setInput("");
       setIsLoading(true);
-      await sendMessage(input, id, userid);
+      if (userid) {
+        await sendMessage(input, id, userid);
+      } else if (handleSubmitNoAuth) {
+        handleSubmitNoAuth(input);
+      }
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
