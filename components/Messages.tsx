@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getMessageList } from "@/lib/actions/chat";
 import Message from "./Message";
 import { Message as MessageType } from "@/lib/definitions";
+import ScrollToBottom from "./ScrollToBottom";
 
 interface Props {
   chatId?: string;
@@ -29,6 +30,7 @@ const Messages = async ({ chatId }: Props) => {
       {messages?.map((message, index) => (
         <Message key={index} {...{ ...message }} />
       ))}
+      <ScrollToBottom />
     </div>
   );
 };
