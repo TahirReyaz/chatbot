@@ -59,11 +59,7 @@ const LoginForm = () => {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Your email address"
-                  {...field}
-                  className="bg-shark"
-                />
+                <Input placeholder="Your email address" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -76,20 +72,15 @@ const LoginForm = () => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input {...field} className="bg-shark" />
+                <Input {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button
-          type="submit"
-          className="w-full"
-          variant={isPending ? "ghost" : "secondary"}
-          disabled={isPending}
-        >
+        <Button type="submit" className="w-full" disabled={isPending}>
           Sign in
-          {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          {isPending && <Loader2 className="ms-2 h-4 w-4 animate-spin" />}
         </Button>
         <p className="text-sm text-center">
           Don&apos;t have an account?{" "}

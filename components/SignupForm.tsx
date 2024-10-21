@@ -33,7 +33,8 @@ const formSchema = z.object({
     .string()
     .min(1, { message: "Password is required" })
     .regex(passwordValidation, {
-      message: "Your password is not valid",
+      message:
+        "Password must be minimum 8 characters long. Must contain an Uppercase, a Lowercase, a Number and a Special Character",
     }),
 });
 
@@ -77,11 +78,7 @@ const SignupForm = () => {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Your email address"
-                  {...field}
-                  className="bg-shark"
-                />
+                <Input placeholder="Your email address" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -94,7 +91,7 @@ const SignupForm = () => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input {...field} className="bg-shark" />
+                <Input {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -102,7 +99,7 @@ const SignupForm = () => {
         />
         <Button type="submit" className="w-full">
           Sign up
-          {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          {isLoading && <Loader2 className="ms-2 h-4 w-4 animate-spin" />}
         </Button>
         <p className="text-sm text-center">
           Already have an account?{" "}

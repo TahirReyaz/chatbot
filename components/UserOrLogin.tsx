@@ -5,6 +5,7 @@ import { auth } from "@/auth";
 import { Button } from "./ui/button";
 import { DropdownMenu, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import UserDropdown from "./UserDropdown";
+import ToggleThemeButton from "./ToggleThemeNoAuth";
 
 const UserOrLogin = async () => {
   const session = (await auth()) as Session;
@@ -18,15 +19,18 @@ const UserOrLogin = async () => {
           <UserDropdown />
         </DropdownMenu>
       ) : (
-        <Link href="/login">
-          <Button
-            {...{
-              size: "sm",
-            }}
-          >
-            Login
-          </Button>
-        </Link>
+        <div className="flex gap-2">
+          <ToggleThemeButton />
+          <Link href="/login">
+            <Button
+              {...{
+                size: "sm",
+              }}
+            >
+              Login
+            </Button>
+          </Link>
+        </div>
       )}
     </>
   );
