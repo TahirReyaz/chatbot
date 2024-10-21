@@ -17,7 +17,7 @@ const Messages = ({ messages }: Props) => {
   }, [messages]);
 
   return (
-    <div className="text-gray-50 max-h-[70vh] overflow-y-auto">
+    <div className="text-gray-50 h-[70vh] overflow-y-auto">
       {/* Render your messages here */}
       {messages?.map((message, index) => (
         <Message key={index} {...{ ...message }} />
