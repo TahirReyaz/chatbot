@@ -1,4 +1,4 @@
-import { Message as MessageType } from "@/app/lib/definitions";
+import { Message as MessageType } from "@/lib/definitions";
 import Message from "../Message";
 
 interface Props {

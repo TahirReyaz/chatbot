@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
-import { Session } from "../lib/definitions";
+import { Session } from "../../lib/definitions";
 import SignupForm from "@/components/SignupForm";
 
 export const metadata: Metadata = {

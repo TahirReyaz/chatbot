@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { Session } from "@/app/lib/definitions";
+import { Session } from "@/lib/definitions";
 import { auth } from "@/auth";
 import { Button } from "./ui/button";
 import { DropdownMenu, DropdownMenuTrigger } from "./ui/dropdown-menu";

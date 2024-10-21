@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { SheetClose, SheetContent } from "@/components/ui/sheet";
 import ChatCard from "./chatCard";
-import { Chat } from "@/app/lib/definitions";
+import { Chat } from "@/lib/definitions";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 

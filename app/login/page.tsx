@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
 import LoginForm from "@/components/LoginForm";
-import { Session } from "../lib/definitions";
+import { Session } from "../../lib/definitions";
 
 export const metadata: Metadata = {
   title: "LLM Connect · Login",

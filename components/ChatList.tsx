@@ -1,4 +1,4 @@
-import { Session } from "@/app/lib/definitions";
+import { Session } from "@/lib/definitions";
 import { auth } from "@/auth";
 import ChatCard from "./chatCard";
 

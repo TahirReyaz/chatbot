@@ -4,7 +4,7 @@ import { sql } from "@vercel/postgres";
 import Groq from "groq-sdk";
 import { revalidatePath } from "next/cache";
 
-import { Chat, Message } from "@/app/lib/definitions";
+import { Chat, Message } from "@/lib/definitions";
 import { redirect } from "next/navigation";
 import {
   ChatCompletionAssistantMessageParam,

@@ -2,7 +2,7 @@
 
 import { Suspense, useState } from "react";
 
-import { Message as MessageType } from "@/app/lib/definitions";
+import { Message as MessageType } from "@/lib/definitions";
 import ChatInput from "../ChatInput";
 import { sendMessage } from "@/lib/actions/chat";
 import Messages from "./Messages";

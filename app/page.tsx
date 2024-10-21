@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import ChatPanel from "@/components/chatPanel";
-import { Session } from "./lib/definitions";
+import { Session } from "../lib/definitions";
 import ChatPanelNoAuth from "@/components/noAuth/ChatPanel";
 
 export default async function Home() {

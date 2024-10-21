@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 
 import { getMessageList } from "@/lib/actions/chat";
 import Message from "./Message";
-import { Message as MessageType } from "@/app/lib/definitions";
+import { Message as MessageType } from "@/lib/definitions";
 
 interface Props {
   chatId?: string;
