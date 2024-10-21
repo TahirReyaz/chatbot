@@ -5,7 +5,7 @@ import { Suspense, useState } from "react";
 import { Message as MessageType } from "@/app/lib/definitions";
 import ChatInput from "../ChatInput";
 import { sendMessage } from "@/lib/actions/chat";
-import Messages from "../Messages";
+import Messages from "./Messages";
 
 const ChatPanelNoAuth = () => {
   const [messages, setMessages] = useState<MessageType[]>([]);
@@ -47,7 +47,7 @@ const ChatPanelNoAuth = () => {
   return (
     <main className="w-full md:w-[70vw] mx-auto flex flex-col gap-8">
       <Suspense fallback={<p>Loading...</p>}>
-        <Messages {...{ messageList: messages }} />
+        <Messages {...{ messages }} />
       </Suspense>
       <ChatInput {...{ messages, handleSubmitNoAuth }} />
     </main>
