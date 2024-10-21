@@ -9,15 +9,16 @@ import Messages from "../Messages";
 
 const ChatPanelNoAuth = () => {
   const [messages, setMessages] = useState<MessageType[]>([]);
+  const randomUserId = new Date().toString();
 
   const handleSubmitNoAuth = async (input: string) => {
     const date = new Date();
     const newMsgObject: MessageType = {
-      id: "random",
+      id: new Date().toString(),
       content: input,
-      userid: "userrandom",
+      userid: randomUserId,
       createdat: date.toDateString(),
-      chat: "random",
+      chat: randomUserId,
     };
 
     const newMessages: MessageType[] = [...messages, newMsgObject];
@@ -33,11 +34,11 @@ const ChatPanelNoAuth = () => {
       setMessages([
         ...newMessages,
         {
-          id: "random",
+          id: new Date().toString(),
           content: botResponse,
           userid: "bot",
-          createdat: "random",
-          chat: "random",
+          createdat: date.toDateString(),
+          chat: randomUserId,
         },
       ]);
     }
