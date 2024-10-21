@@ -21,8 +21,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "AI Chatbot",
-  description: "Made with Nextjs",
+  title: "LLM Connect",
+  description: "Chatgpt-like AI Chatbot",
 };
 
 export default function RootLayout({
@@ -42,7 +42,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Sheet>
-            <Suspense fallback={<p>meh</p>}>
+            <Suspense fallback={<div />}>
               <Sidebar />
             </Suspense>
             <Navbar />

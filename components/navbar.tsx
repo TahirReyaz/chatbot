@@ -15,7 +15,7 @@ const Navbar = () => {
             <Menu size={20} />
           </div>
         </SheetTrigger>
-        <Link href="/">AI Chat</Link>
+        <Link href="/">LLM Connect</Link>
       </div>
       {/* Buttons */}
       <Suspense fallback={<div className="flex-1 overflow-auto" />}>
