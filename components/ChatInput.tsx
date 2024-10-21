@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { KeyboardEvent, useState } from "react";
 import { useTheme } from "next-themes";
 import { ArrowUp, Loader } from "lucide-react";
 
@@ -34,12 +34,20 @@ const ChatInput = ({ id, userid, handleSubmitNoAuth }: Props) => {
     }
   };
 
+  const handleEnterPress = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && e.shiftKey === false) {
+      e.preventDefault();
+      handleSubmit();
+    }
+  };
+
   return (
     <div className="relative">
       <Textarea
         placeholder="Say something..."
         value={input}
         onChange={(e) => setInput(e.target.value)}
+        onKeyDown={handleEnterPress}
         className={`${
           resolvedTheme === "light" ? "bg-athensGray" : "bg-shark"
         }`}
