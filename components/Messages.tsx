@@ -1,16 +1,27 @@
+import { notFound } from "next/navigation";
+
 import { getMessageList } from "@/lib/actions/chat";
 import Message from "./Message";
 import { Message as MessageType } from "@/app/lib/definitions";
 
 interface Props {
   chatId?: string;
-  messageList?: MessageType[];
 }
 
-const Messages = async ({ chatId, messageList }: Props) => {
-  const messages: MessageType[] | undefined = chatId
-    ? await getMessageList(chatId)
-    : messageList;
+const Messages = async ({ chatId }: Props) => {
+  let messages: MessageType[] = [];
+  if (chatId) {
+    try {
+      const fetchedMsgs = await getMessageList(chatId);
+      messages = fetchedMsgs;
+      if (messages.length === 0) {
+        throw new Error(`No messages found in the chat with id ${chatId}`);
+      }
+    } catch (error) {
+      console.error(error);
+      notFound();
+    }
+  }
 
   return (
     <div className="text-gray-50 max-h-[70vh] overflow-y-auto">
