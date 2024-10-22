@@ -6,6 +6,7 @@ import { ArrowUp, Loader } from "lucide-react";
 
 import { sendMessage } from "@/lib/actions/chat";
 import { Textarea } from "./ui/textarea";
+import useCheckMobileScreen from "@/hooks";
 
 interface Props {
   id?: string;
@@ -17,6 +18,7 @@ const ChatInput = ({ id, userid, handleSubmitNoAuth }: Props) => {
   const [input, setInput] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { resolvedTheme } = useTheme();
+  const isMobile = useCheckMobileScreen();
 
   const handleSubmit = async () => {
     try {
@@ -35,7 +37,7 @@ const ChatInput = ({ id, userid, handleSubmitNoAuth }: Props) => {
   };
 
   const handleEnterPress = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && e.shiftKey === false) {
+    if (e.key === "Enter" && e.shiftKey === false && !isMobile) {
       e.preventDefault();
       handleSubmit();
     }
