@@ -31,6 +31,7 @@ const formSchema = z.object({
 });
 
 const LoginForm = () => {
+  // Had to create this form object so that shadcn Form could be used
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -40,16 +41,30 @@ const LoginForm = () => {
   });
 
   const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
+  // Had to write this because it was stated in the docs that useActionState handles form with server functions... will look into it later and remove this if needed
   const [errorMessage, formAction, isPending] = useActionState(
     authenticate,
     undefined
   );
 
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    setHasSubmitted(true);
+
+    // The action state wants FormData not an object so had to write this as well
+    const formData = new FormData();
+    formData.append("email", data.email);
+    formData.append("password", data.password);
+
+    return formAction(formData);
+  };
+
+  // For the toasts
   useEffect(() => {
     if (hasSubmitted && !isPending) {
       if (errorMessage) {
         toast.error(errorMessage);
       } else {
+        // This doesn't work because the page gets redirected from the server function before this code runs
         toast.success("Successfully logged in");
       }
       setHasSubmitted(false);
@@ -59,10 +74,7 @@ const LoginForm = () => {
   return (
     <Form {...form}>
       <form
-        action={async (payload) => {
-          setHasSubmitted(true);
-          return formAction(payload);
-        }}
+        onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-8 w-[350px] mx-auto mt-8 "
       >
         <h3 className="text-center text-lg font-bold">Sign In</h3>
