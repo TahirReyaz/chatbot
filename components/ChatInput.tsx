@@ -1,12 +1,11 @@
 "use client";
 
-import { KeyboardEvent, useState } from "react";
+import { KeyboardEvent, useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { ArrowUp, Loader } from "lucide-react";
 
 import { sendMessage } from "@/lib/actions/chat";
 import { Textarea } from "./ui/textarea";
-import useCheckMobileScreen from "@/hooks";
 
 interface Props {
   id?: string;
@@ -18,7 +17,13 @@ const ChatInput = ({ id, userid, handleSubmitNoAuth }: Props) => {
   const [input, setInput] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { resolvedTheme } = useTheme();
-  const isMobile = useCheckMobileScreen();
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsMobile(window.innerWidth <= 768);
+    }
+  }, []);
 
   const handleSubmit = async () => {
     try {
