@@ -3,21 +3,23 @@ export type User = {
   email: string;
   password: string;
   salt: string;
-  createdat: string;
+  created_at: string;
+  updated_at: string;
 };
 
 export type Message = {
   id: string;
   content: string;
   userid: string;
-  createdat: string;
+  created_at: string;
   chat: string;
+  role: "user" | "assistant";
 };
 
 export type Chat = {
   id: string;
   title: string;
-  createdAt: string;
+  created_at: string;
   userid: string;
 };
 

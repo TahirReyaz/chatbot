@@ -17,8 +17,9 @@ const ChatPanelNoAuth = () => {
       id: new Date().toString(),
       content: input,
       userid: randomUserId,
-      createdat: date.toDateString(),
+      created_at: date.toDateString(),
       chat: randomUserId,
+      role: "user",
     };
 
     const newMessages: MessageType[] = [...messages, newMsgObject];
@@ -36,9 +37,10 @@ const ChatPanelNoAuth = () => {
         {
           id: new Date().toString(),
           content: botResponse,
-          userid: "bot",
-          createdat: date.toDateString(),
+          userid: randomUserId,
+          created_at: date.toDateString(),
           chat: randomUserId,
+          role: "assistant",
         },
       ]);
     }

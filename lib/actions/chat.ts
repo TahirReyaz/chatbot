@@ -25,21 +25,21 @@ export const sendMessage = async (
     if (!chatId && userid) {
       const newChat = await createNewChat(message.substring(0, 20), userid);
       newChatId = newChat.id;
-      await saveMessage(message, userid, newChat.id);
+      await saveMessage(message, userid, newChat.id, "user");
 
       const botResponse = await getReponseFromBot(newChatId, userid);
-      await saveMessage(botResponse, "bot", newChat.id);
+      await saveMessage(botResponse, userid, newChat.id, "assistant");
       redirect(`/chat/${newChatId}`);
     }
     // Existing chat -> store the message in chat and the send to groq
     else if (chatId && userid) {
-      await saveMessage(message, userid, chatId);
+      await saveMessage(message, userid, chatId, "user");
       // This revalidatePath isn't working but the at the end is working don't know why
       revalidatePath(`/chat/${chatId}`);
 
       const botResponse = await getReponseFromBot(chatId, userid);
 
-      await saveMessage(botResponse, "bot", chatId);
+      await saveMessage(botResponse, userid, chatId, "assistant");
       revalidatePath(`/chat/${chatId}`);
     }
     // User not logged in
@@ -60,12 +60,13 @@ export const sendMessage = async (
 export const saveMessage = async (
   content: string,
   userid: string,
-  chat: string
+  chat: string,
+  role: "user" | "assistant"
 ) => {
   try {
     const newMsg = await sql`
-      INSERT INTO messages (content, userid, chat) 
-      VALUES (${content}, ${userid}, ${chat})
+      INSERT INTO messages (content, userid, chat, role) 
+      VALUES (${content}, ${userid}, ${chat}, ${role})
       RETURNING *
     `;
     return newMsg.rows[0];
@@ -118,7 +119,7 @@ export const getReponseFromBot = async (
     | ChatCompletionUserMessageParam
     | ChatCompletionAssistantMessageParam
   )[] = messages.map((dbMessage) => ({
-    role: dbMessage.userid === "bot" ? "assistant" : "user",
+    role: dbMessage.role,
     content: dbMessage.content,
     name: userid,
   }));

@@ -6,16 +6,16 @@ import { useTheme } from "next-themes";
 interface Props {
   id: string;
   content: string;
-  userid: string;
+  role: string;
 }
 
-const Message = ({ content, userid }: Props) => {
+const Message = ({ content, role }: Props) => {
   const { resolvedTheme } = useTheme();
 
   return (
     <div className={`mb-4 flex gap-2`}>
       <div className="text-santasGray">
-        {userid === "bot" ? <BotIcon size={20} /> : <User size={20} />}
+        {role === "assistant" ? <BotIcon size={20} /> : <User size={20} />}
       </div>
       <p
         className={` ${
