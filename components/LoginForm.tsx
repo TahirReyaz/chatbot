@@ -4,8 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Link from "next/link";
-import { useActionState, useEffect, useState } from "react";
+import { useState } from "react";
 import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -17,8 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { authenticate } from "@/lib/actions/auth";
-import { toast } from "sonner";
+import { authenticate } from "@/lib/actions";
 
 const formSchema = z.object({
   email: z
@@ -40,41 +40,29 @@ const LoginForm = () => {
     },
   });
 
-  const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
-  // Had to write this because it was stated in the docs that useActionState handles form with server functions... will look into it later and remove this if needed
-  const [errorMessage, formAction, isPending] = useActionState(
-    authenticate,
-    undefined
-  );
+  const [isPending, setIsPending] = useState<boolean>(false);
 
-  const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    setHasSubmitted(true);
+  const handleSubmit = async (data: z.infer<typeof formSchema>) => {
+    setIsPending(true);
+    try {
+      const formData = new FormData();
+      formData.append("email", data.email);
+      formData.append("password", data.password);
 
-    // The action state wants FormData not an object so had to write this as well
-    const formData = new FormData();
-    formData.append("email", data.email);
-    formData.append("password", data.password);
+      await authenticate(formData);
 
-    return formAction(formData);
-  };
-
-  // For the toasts
-  useEffect(() => {
-    if (hasSubmitted && !isPending) {
-      if (errorMessage) {
-        toast.error(errorMessage);
-      } else {
-        // This doesn't work because the page gets redirected from the server function before this code runs
-        toast.success("Successfully logged in");
-      }
-      setHasSubmitted(false);
+      toast.success("Successfully logged in");
+      setIsPending(false);
+    } catch (error: any) {
+      toast.error(error.message);
+      setIsPending(false);
     }
-  }, [errorMessage, hasSubmitted, isPending]);
+  };
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className="space-y-8 w-[350px] mx-auto mt-8 "
       >
         <h3 className="text-center text-lg font-bold">Sign In</h3>
@@ -109,6 +97,7 @@ const LoginForm = () => {
         />
         <Button type="submit" className="w-full" disabled={isPending}>
           Sign in
+          {/* Don't know why this spinner is never rendered even when isPending is true */}
           {isPending && <Loader2 className="ms-2 h-4 w-4 animate-spin" />}
         </Button>
         <p className="text-sm text-center">

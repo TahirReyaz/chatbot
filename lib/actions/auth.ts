@@ -59,19 +59,16 @@ export const signup = async (
   }
 };
 
-export const authenticate = async (
-  prevState: string | undefined,
-  formData: FormData
-) => {
+export const authenticate = async (formData: FormData) => {
   try {
     await signIn("credentials", formData);
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
-          return "Invalid credentials.";
+          throw new Error("Invalid credentials.");
         default:
-          return "Something went wrong.";
+          throw new Error("Something went wrong.");
       }
     }
     throw error;
