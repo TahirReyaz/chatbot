@@ -8,6 +8,7 @@ import Navbar from "@/components/navbar";
 import { Sheet } from "@/components/ui/sheet";
 import Sidebar from "@/components/Sidebar";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -47,6 +48,7 @@ export default function RootLayout({
             </Suspense>
             <Navbar />
             {children}
+            <Toaster />
           </Sheet>
         </ThemeProvider>
       </body>

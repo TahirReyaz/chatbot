@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { authenticate } from "@/lib/actions/auth";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   email: z
@@ -38,16 +39,32 @@ const LoginForm = () => {
     },
   });
 
+  const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
   const [errorMessage, formAction, isPending] = useActionState(
     authenticate,
     undefined
   );
 
-  console.log({ errorMessage });
+  useEffect(() => {
+    if (hasSubmitted && !isPending) {
+      if (errorMessage) {
+        toast.error(errorMessage);
+      } else {
+        toast.success("Successfully logged in");
+      }
+      setHasSubmitted(false);
+    }
+  }, [errorMessage, hasSubmitted, isPending]);
 
   return (
     <Form {...form}>
-      <form action={formAction} className="space-y-8 w-[350px] mx-auto mt-8 ">
+      <form
+        action={async (payload) => {
+          setHasSubmitted(true);
+          return formAction(payload);
+        }}
+        className="space-y-8 w-[350px] mx-auto mt-8 "
+      >
         <h3 className="text-center text-lg font-bold">Sign In</h3>
         <p className="text-center text-sm">
           Use your email and password to sign in

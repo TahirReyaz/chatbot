@@ -4,8 +4,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -18,7 +20,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { signup } from "@/lib/actions/auth";
-import { useState } from "react";
 
 const passwordValidation = new RegExp(
   /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
@@ -41,6 +42,8 @@ const formSchema = z.object({
 const SignupForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -54,8 +57,10 @@ const SignupForm = () => {
       setIsLoading(true);
       await signup(values.email, values.password);
       setIsLoading(false);
-      redirect("/login");
+      toast.success("Successfully registered!");
+      router.push("/login");
     } catch (error) {
+      toast.error("Failed to Register!");
       setIsLoading(false);
       console.error(error);
     }
