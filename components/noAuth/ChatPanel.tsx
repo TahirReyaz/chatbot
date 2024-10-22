@@ -45,7 +45,7 @@ const ChatPanelNoAuth = () => {
   };
 
   return (
-    <main className="w-full md:w-[70vw] mx-auto flex flex-col gap-8">
+    <main className="w-full md:w-[70vw] mx-auto flex flex-col gap-8 px-2">
       <Suspense fallback={<p>Loading...</p>}>
         <Messages {...{ messages }} />
       </Suspense>

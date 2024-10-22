@@ -9,7 +9,7 @@ interface Props {
 
 const ChatPanel = ({ id, userid }: Props) => {
   return (
-    <div className="w-full md:w-[70vw] mx-auto flex flex-col gap-8">
+    <div className="w-full md:w-[70vw] mx-auto flex flex-col gap-8 px-2">
       <Suspense fallback={<p>Loading...</p>}>
         <Messages {...{ chatId: id }} />
       </Suspense>
