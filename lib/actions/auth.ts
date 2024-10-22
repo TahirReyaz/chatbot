@@ -15,10 +15,7 @@ export const createUser = async (
   const existingUser = await getUser(email);
 
   if (existingUser) {
-    return {
-      type: "error",
-      resultCode: ResultCode.UserAlreadyExists,
-    };
+    throw new Error(ResultCode.UserAlreadyExists);
   } else {
     await sql`
     INSERT INTO chatusers (email, password, salt) 
@@ -58,25 +55,7 @@ export const signup = async (
 
     return result;
   } catch (error) {
-    if (error instanceof AuthError) {
-      switch (error.type) {
-        case "CredentialsSignin":
-          return {
-            type: "error",
-            resultCode: ResultCode.InvalidCredentials,
-          };
-        default:
-          return {
-            type: "error",
-            resultCode: ResultCode.UnknownError,
-          };
-      }
-    } else {
-      return {
-        type: "error",
-        resultCode: ResultCode.UnknownError,
-      };
-    }
+    throw error;
   }
 };
 

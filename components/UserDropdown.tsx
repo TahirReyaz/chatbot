@@ -16,7 +16,9 @@ const UserDropdown = () => {
         }}
         className="w-full"
       >
-        <button className="w-full text-red-500">Sign out</button>
+        <button className="w-full text-red-500 rounded py-1 hover:bg-santasGray/20">
+          Sign out
+        </button>
       </form>
     </DropdownMenuContent>
   );

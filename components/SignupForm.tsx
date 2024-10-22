@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { signup } from "@/lib/actions/auth";
+import { ResultCode } from "@/lib/utils";
 
 const passwordValidation = new RegExp(
   /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
@@ -57,10 +58,10 @@ const SignupForm = () => {
       setIsLoading(true);
       await signup(values.email, values.password);
       setIsLoading(false);
-      toast.success("Successfully registered!");
+      toast.success(ResultCode.UserCreated);
       router.push("/login");
-    } catch (error) {
-      toast.error("Failed to Register!");
+    } catch (error: any) {
+      toast.error(error.message);
       setIsLoading(false);
       console.error(error);
     }
