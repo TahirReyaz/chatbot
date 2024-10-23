@@ -4,7 +4,7 @@ import { AuthError } from "next-auth";
 import { sql } from "@vercel/postgres";
 import bcrypt from "bcrypt";
 
-import { getUser, signIn } from "@/auth";
+import { getUser, signIn, signOut } from "@/auth";
 import { ResultCode } from "../utils";
 
 export const createUser = async (
@@ -71,6 +71,14 @@ export const authenticate = async (formData: FormData) => {
           throw new Error("Something went wrong.");
       }
     }
+    throw error;
+  }
+};
+
+export const signOutFn = async () => {
+  try {
+    await signOut({ redirect: false });
+  } catch (error) {
     throw error;
   }
 };
