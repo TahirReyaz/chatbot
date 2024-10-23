@@ -60,8 +60,12 @@ const SignupForm = () => {
       setIsLoading(false);
       toast.success(ResultCode.UserCreated);
       router.push("/login");
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("An unknown error occurred.");
+      }
       setIsLoading(false);
       console.error(error);
     }

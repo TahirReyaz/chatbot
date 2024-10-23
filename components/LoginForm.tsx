@@ -53,8 +53,13 @@ const LoginForm = () => {
 
       toast.success("Successfully logged in");
       setIsPending(false);
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error: unknown) {
+      // Type guard for standard Error
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("An unknown error occurred.");
+      }
       setIsPending(false);
     }
   };
