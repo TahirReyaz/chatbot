@@ -12,6 +12,7 @@ import {
 } from "groq-sdk/resources/chat/completions.mjs";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+const MODEL_NAME = process.env.GROQ_MODEL_NAME || "mixtral-8x7b-32768";
 
 export const sendMessage = async (
   message: string,
@@ -125,7 +126,7 @@ export const getReponseFromBot = async (
   }));
   const completion = await groq.chat.completions.create({
     messages: groqMessages,
-    model: "mixtral-8x7b-32768",
+    model: "MODEL_NAME",
   });
 
   botResponse = completion.choices[0]?.message?.content || "";
