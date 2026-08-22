@@ -18,7 +18,7 @@ export const sendMessage = async (
   message: string,
   chatId?: string,
   userid?: string,
-  messsageList?: Message[]
+  messsageList?: Message[],
 ) => {
   let newChatId = chatId;
   try {
@@ -48,7 +48,7 @@ export const sendMessage = async (
       const botResponse = await getReponseFromBot(
         undefined,
         undefined,
-        messsageList
+        messsageList,
       );
       return botResponse;
     }
@@ -62,7 +62,7 @@ export const saveMessage = async (
   content: string,
   userid: string,
   chat: string,
-  role: "user" | "assistant"
+  role: "user" | "assistant",
 ) => {
   try {
     const newMsg = await sql`
@@ -105,7 +105,7 @@ export const getChatList = async (userid: string) => {
 export const getReponseFromBot = async (
   chatId?: string,
   userid?: string,
-  messageList?: Message[]
+  messageList?: Message[],
 ) => {
   let botResponse = "",
     messages: Message[] = [];
@@ -126,7 +126,7 @@ export const getReponseFromBot = async (
   }));
   const completion = await groq.chat.completions.create({
     messages: groqMessages,
-    model: "MODEL_NAME",
+    model: MODEL_NAME,
   });
 
   botResponse = completion.choices[0]?.message?.content || "";
